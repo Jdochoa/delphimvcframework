@@ -1,4 +1,4 @@
-unit MVCFramework.Tests.StandaloneServer;
+unit StandaloneServerTestU;
 
 interface
 
@@ -24,7 +24,7 @@ type
 
 
   [TestFixture]
-  TTestMVCFrameworkServer = class(TObject)
+  TTestServerContainer = class(TObject)
   private
 
   protected
@@ -44,27 +44,27 @@ type
 implementation
 
 uses
-  MVCFramework.Tests.WebModule2,
   MVCFramework.RESTClient,
-  MVCFramework.RESTClient.Intf;
+  MVCFramework.RESTClient.Intf,
+  StandAloneServerWebModuleTest;
 
-{ TTestMVCFrameworkServer }
+{ TTestServerContainer }
 
-procedure TTestMVCFrameworkServer.SetUp;
+procedure TTestServerContainer.SetUp;
 begin
   inherited;
 
 end;
 
-procedure TTestMVCFrameworkServer.TearDown;
+procedure TTestServerContainer.TearDown;
 begin
   inherited;
 
 end;
 
-procedure TTestMVCFrameworkServer.TestListener;
+procedure TTestServerContainer.TestListener;
 var
-  LListener: IMVCListener;
+  lListener: IMVCListener;
 begin
   LListener := TMVCListener.Create(TMVCListenerProperties.New
     .SetName('Listener1')
@@ -82,7 +82,7 @@ begin
   Assert.isFalse(LListener.Active);
 end;
 
-procedure TTestMVCFrameworkServer.TestServerListenerAndClient;
+procedure TTestServerContainer.TestServerListenerAndClient;
 var
   LListener: IMVCListener;
   LClient: IMVCRESTClient;
@@ -107,7 +107,7 @@ begin
   Assert.isFalse(LListener.Active);
 end;
 
-procedure TTestMVCFrameworkServer.TestListenerContext;
+procedure TTestServerContainer.TestListenerContext;
 var
   LListenerCtx: IMVCListenersContext;
 begin
@@ -157,7 +157,7 @@ end;
 
 initialization
 
-TDUnitX.RegisterTestFixture(TTestMVCFrameworkServer);
+TDUnitX.RegisterTestFixture(TTestServerContainer);
 
 end.
 

@@ -1,4 +1,4 @@
-unit MVCFramework.Tests.WebModule2;
+unit StandAloneServerWebModuleTest;
 
 interface
 
@@ -27,10 +27,10 @@ var
 implementation
 
 uses
-  MVCFramework.Tests.StandaloneServer,
   MVCFramework.Middleware.Authentication,
   MVCFramework.Server,
-  MVCFramework.Server.Impl;
+  MVCFramework.Server.Impl,
+  StandaloneServerTestU;
 
 {$R *.dfm}
 

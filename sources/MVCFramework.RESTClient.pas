@@ -699,7 +699,7 @@ end;
 
 function TMVCRESTClient.AddQueryStringParam(const aName: string; aValue: Double): IMVCRESTClient;
 begin
-  Result := AddPathParam(aName, aValue.ToString);
+  Result := AddQueryStringParam(aName, aValue.ToString);
 end;
 
 function TMVCRESTClient.AddQueryStringParam(const aName: string; aValue: TTime): IMVCRESTClient;
@@ -769,7 +769,7 @@ begin
   Result := Self;
 
   fBaseURL := aBaseURL;
-  if not fBaseURL.Contains('://') then
+  if not (fBaseURL.IsEmpty or fBaseURL.Contains('://')) then
     fBaseURL := 'http://' + fBaseURL;
 
   fBaseURL := fBaseURL;
@@ -1233,7 +1233,7 @@ begin
   lResource := fResource;
   if not lResource.IsEmpty then
   begin
-    if not Result.EndsWith('/') and
+    if not (Result.IsEmpty or Result.EndsWith('/')) and
       not (lResource.StartsWith('/') or lResource.StartsWith('?') or lResource.StartsWith('#')) then
     begin
       Result := Result + '/';
@@ -1357,7 +1357,14 @@ begin
 
   DoBeforeRequest(lRequest);
 
-  lResponse := fHTTPClient.Execute(lRequest, nil, []);
+  try
+    lResponse := fHTTPClient.Execute(lRequest, nil, []);
+  except
+    on E: Exception do
+    begin
+      raise EMVCRESTClientException.Create(E.Message);
+    end;
+  end;
 
   lHandled := False;
   DoRequestCompleted(lResponse, lHandled);
